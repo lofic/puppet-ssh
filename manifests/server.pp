@@ -1,4 +1,5 @@
 # SSH server configuration and deployment of user keys.
+# Requires herculesteam/augeasproviders_ssh
 
 class ssh::server(
     Hash $options,
@@ -10,14 +11,12 @@ class ssh::server(
         default => 'sshd',
     }
 
-    $optionarray = $options.map |$k, $v| { "set ${k} ${v}"}
-
-    augeas { 'ssh server config':
-        incl    => '/etc/ssh/sshd_config',
-        lens    => 'sshd.lns',
-        changes => $optionarray,
-        notify  => Service[$sshsrv]
+    $optdefaults = {
+        ensure => present,
+        notify => Service[$sshsrv],
     }
+
+    $options.each |$o, $p| { sshd_config { $o: * => $optdefaults + $p } }
 
     service { $sshsrv:
         ensure => running,
