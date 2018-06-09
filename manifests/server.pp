@@ -23,24 +23,28 @@ class ssh::server(
         enable => true,
     }
 
-    File {
+    $filedefaults = {
         ensure => present,
         owner  => 'root',
         group  => 'root',
         mode   => '0555',
     }
 
-    file { '/etc/ssh/authorized_keys':
-        ensure => directory,
+    file {
+        default: * => $filedefaults;
+        '/etc/ssh/authorized_keys':
+            ensure => directory,;
     }
 
     $userkeys.each |String $u, Hash $v| {
-        file { "/etc/ssh/authorized_keys/${u}":
-            ensure  => $v['ensure'],
-            mode    => '0444',
-            content => inline_template(
-                "<% @v['keys'].each do |k| -%><%= k %>\n<% end -%>",
-            ),
+        file {
+            default: * => $filedefaults;
+            "/etc/ssh/authorized_keys/${u}":
+                ensure  => $v['ensure'],
+                mode    => '0444',
+                content => inline_template(
+                    "<% @v['keys'].each do |k| -%><%= k %>\n<% end -%>",
+                ),;
         }
     }
 
