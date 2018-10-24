@@ -13,8 +13,9 @@ lookup_options:
         merge: hash
 
 ssh::server::options:
-    # the filebeat system auth module expects the SyslogFacility AUTH
-    SyslogFacility: AUTH
+    # the filebeat system auth module expects the SyslogFacility AUTHPRIV for
+    # ssh logs
+    SyslogFacility: AUTHPRIV
     PermitRootLogin: without-password
     PubkeyAuthentication: 'yes'
     AuthorizedKeysFile: '/etc/ssh/authorized_keys/%u'
