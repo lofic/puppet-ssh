@@ -7,8 +7,8 @@ class ssh::server(
 ) {
 
     $sshsrv = $::osfamily ? {
-        'Debian'  => 'ssh',
-        default => 'sshd',
+        'Debian' => 'ssh',
+        default  => 'sshd',
     }
 
     $optdefaults = {
