@@ -1,5 +1,5 @@
 # SSH server configuration and deployment of user keys.
-# Requires herculesteam/augeasproviders_ssh
+# Requires the module puppet/augeasproviders_ssh
 
 class ssh::server(
     Hash $options,
